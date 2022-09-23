@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{parent()}} - Admin
+{% endblock %}
+
+{% block body %}
+  <h1 class="text-center text-primary mt-4 pt-4 display-1 fw-bold">Administration</h1>
+  <div class="container">
+    <div class="row">
+        <div class="col">
+            <a href="{{ path('app_adm_contacts') }}" class="btn btn-primary">Contacts</a>
+            {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('app_adm_users') }}" class="btn btn-primary">Users</a>{% endif %}
+        </div>
+    </div>
+  </div>
+{% endblock %}
