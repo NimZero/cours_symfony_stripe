@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserValidatedEvent;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -84,7 +86,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository, EventDispatcherInterface $eventDispatcher): Response
     {
         $id = $request->get('id');
 
@@ -107,8 +109,9 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
+
+        $eventDispatcher->dispatch(new UserValidatedEvent($user), UserValidatedEvent::NAME);
 
         return $this->redirectToRoute('app_login');
     }
