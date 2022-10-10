@@ -27,6 +27,9 @@
                 <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_shop') }}">Shop</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_about') }}">A Propos</a>
               </li>
               <li class="nav-item">
@@ -41,6 +44,7 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{{ path('app_usr_profile') }}">Profil</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_usr_cart') }}">Panier</a></li>
                     <li><hr class="dropdown-divider"></li>
                     {% if is_granted('ROLE_MOD') %}
                       <li><a class="dropdown-item" href="{{ path('app_admin') }}">Admin</a></li>

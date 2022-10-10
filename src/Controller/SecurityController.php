@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
@@ -84,7 +85,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
+    public function verifyUserEmail(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         $id = $request->get('id');
 
@@ -109,6 +110,14 @@ class SecurityController extends AbstractController
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
+
+        $cart = new Cart;
+        $cart->setUser($user);
+        $user->setCart($cart);
+
+        $entityManagerInterface->persist($cart);
+        $entityManagerInterface->persist($user);
+        $entityManagerInterface->flush();
 
         return $this->redirectToRoute('app_login');
     }

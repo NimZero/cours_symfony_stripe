@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Mon Panier{% endblock %}
+
+{% block body %}
+<h1 class="text-center text-primary mt-4 st-4 display-1 fw-bold">Mon Panier</h1>
+<div class="container">
+    <div class="row">
+        <div class="col col-10 ">
+            <div class="row">
+                {% for item in cart.items %}
+                    <div class="col col-sm-12 col-md-3">
+                        <div class="card text-white bg-primary mt-3">
+                            <div class="card-header">{{ item.product.name }}</div>
+                            <div class="card-body">
+                                <p class="card-text">{{ item.product.description }}</p>
+                                <p>Qtt:
+                                    {{ item.quantity }}
+                                    |
+                                    {{ item.price.unitAmount / 100 }}
+                                    {{ item.price.currency | upper | currency_symbol}}
+                                    / unit |
+                                    {{ item.quantity * (item.price.unitAmount / 100) }}
+                                    {{ item.price.currency | upper | currency_symbol}}</p>
+                                <a href="{{ path('app_usr_cart', {'remove': item.id }) }}" class="btn btn-secondary">supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col col-2">
+            <div class="card text-white bg-primary mt-3 h-100">
+                <div class="card-header">Panier</div>
+                <div class="card-body text-center">
+                    <p>Total: {% if cart.items is not empty %}{{ cart.total / 100 }} {{ cart.items[0].price.currency | upper | currency_symbol}}{% else %}0{% endif %}</p>
+                    <a href="{{ path('app_usr_cart_pay') }}" class="btn btn-secondary">Payer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

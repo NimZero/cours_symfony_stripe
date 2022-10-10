@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{parent()}} - Shop
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+        <div class="col col-sm-12 col-md-3">
+            <div class="card text-white bg-primary mt-3">
+                <div class="card-header">{{ product.name }}</div>
+                <div class="card-body">
+                    <p class="card-text">{{ product.description }}</p>
+                    {% for price in product.activePrices %}
+                    <p>{{ price.unitAmount / 100 }}&nbsp;{{ price.currency | upper | currency_symbol}}</p>
+                    {% endfor %}
+                    <a href="{{ path('app_shop_cart_add', {'product': product.id }) }}" class="btn btn-secondary">Ajouter</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
