@@ -9,6 +9,13 @@ parameters:
     stripe_webhook_secret: '%env(resolve:STRIPE_WEBHOOK_SECRET)%'
     stripe_api_version: '2022-08-01'
 
+    subscription.price:
+        1: price_1LrfXXJMwMCAol8z9v1fYovm
+        2: price_1LrfXlJMwMCAol8zdU0ARHzw
+    subscription.product:
+        1: prod_MarG0M8Hq0z55D
+        2: prod_MarGh7ueVfifKF
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -32,3 +39,7 @@ services:
     App\EventListener\UserValidatedEventListener:
         tags:
             - { name: kernel.event_listener, event: app.user.validated }
+
+    App\Security\Voter\SubscriptionVoter:
+        arguments:
+            $subscriptionProducts: '%subscription.product%'

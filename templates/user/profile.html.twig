@@ -3,23 +3,37 @@
 {% block title %}{{parent()}} - Mon Profil{% endblock %}
 
 {% block body %}
-  <h1 class="text-center text-primary mt-4 st-4 display-1 fw-bold">Mon Profil</h1>
-  <div class="text-center">
-    <span>Email: {{ app.user.email | lower }}</span>
-    <br>
-    <span>Nom: {{ app.user.lastname | upper }}</span>
-    <br>
-    <span>Prenom: {{ app.user.firstname | capitalize }}</span>
-    <br>
-    <span>Date d'inscription: {{ app.user.registrationDate | date("d-m-Y à H:i:s") }}</span>
-    <br>
-    {% if is_granted('ROLE_ADMIN') %}
-      <span>Role: administrateur</span>
-    {% elseif is_granted('ROLE_MOD') %}
-      <span>Role: moderateur</span>
-    {% else %}
-      <span>Role: utilisateur</span>
-    {% endif %}
-  </div>
-  <a href="{{ path('app_stripe_portal') }}" class="btn btn-primary">Portail</a>
+    <h1 class="text-center text-primary mt-4 st-4 display-1 fw-bold">Mon Profil</h1>
+    <div class="text-center">
+        <span>Email:
+            {{ app.user.email | lower }}</span>
+        <br>
+        <span>Nom:
+            {{ app.user.lastname | upper }}</span>
+        <br>
+        <span>Prenom:
+            {{ app.user.firstname | capitalize }}</span>
+        <br>
+        <span>Date d'inscription:
+            {{ app.user.registrationDate | date("d-m-Y à H:i:s") }}</span>
+        <br>
+        {% if is_granted('ROLE_ADMIN') %}
+            <span>Role: administrateur</span>
+        {% elseif is_granted('ROLE_MOD') %}
+            <span>Role: moderateur</span>
+        {% else %}
+            <span>Role: utilisateur</span>
+        {% endif %}
+        <br>
+        <span>Abonnement:
+            {{ app.user.subscriptionStatus }}</span>
+        <br>
+        <span>Tier:
+            {% if is_granted('SUBSCRIPTION_TIER_2') %} 2 {% elseif is_granted('SUBSCRIPTION_TIER_1') %} 1 {% else %} N/A {% endif %}</span>
+        <br>
+        <a href="{{ path('app_usr_subscribe') }}" class="btn btn-primary">Subscribe</a>
+        <br>
+        <a href="{{ path('app_stripe_portal') }}" class="btn btn-primary">Portail</a>
+    </div>
 {% endblock %}
+

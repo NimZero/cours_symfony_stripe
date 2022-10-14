@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Mon Abonnement{% endblock %}
+
+{% block body %}
+    <h1 class="text-center text-primary mt-4 st-4 display-1 fw-bold">Mon Abonnement</h1>
+    <div class="text-center">
+        <a href="{{ path('app_usr_subscribe', {'tier': '1'}) }}" class="btn btn-primary">Tier 1</a>
+        <br>
+        <a href="{{ path('app_usr_subscribe', {'tier': '2'}) }}" class="btn btn-primary">Tier 2</a>
+    </div>
+{% endblock %}
+
