@@ -36,10 +36,6 @@ services:
             $api_key: '%stripe_api_secret_key%'
             $api_version: '%stripe_api_version%'
 
-    App\EventListener\UserValidatedEventListener:
-        tags:
-            - { name: kernel.event_listener, event: app.user.validated }
-
     App\Security\Voter\SubscriptionVoter:
         arguments:
             $subscriptionProducts: '%subscription.product%'

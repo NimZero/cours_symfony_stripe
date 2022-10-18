@@ -1,12 +1,12 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventSubscriber;
 
 use App\Event\UserValidatedEvent;
 use App\Service\StripeService;
 use Doctrine\Persistence\ManagerRegistry;
 
-class UserValidatedEventListener
+class UserValidatedEventSubscriber
 {
   private StripeService $stripe;
   private ManagerRegistry $doctrine;
@@ -16,6 +16,13 @@ class UserValidatedEventListener
     $this->stripe = $stripe;
     $this->doctrine = $doctrine;
   }
+
+  public static function getSubscribedEvents(): array
+    {
+        return [
+          UserValidatedEvent::NAME => [['onAppUserValidated', 0]],
+        ];
+    }
 
   public function onAppUserValidated(UserValidatedEvent $event): void
   {

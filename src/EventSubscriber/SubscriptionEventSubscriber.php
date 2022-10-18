@@ -7,7 +7,7 @@ use App\Event\StripeEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SubscriptionSubscriber implements EventSubscriberInterface
+class SubscriptionEventSubscriber implements EventSubscriberInterface
 {
     private EntityManagerInterface $doctrine;
 
