@@ -6,15 +6,18 @@ use App\Entity\Cart;
 use App\Entity\Order;
 use App\Entity\ShippingRate;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CheckoutService
 {
   private ManagerRegistry $doctrine;
+  private UrlGeneratorInterface $urlGenerator;
   private string $stripe_api_key;
 
-  public function __construct(ManagerRegistry $doctrine, string $stripe_api_key)
+  public function __construct(ManagerRegistry $doctrine, UrlGeneratorInterface $urlGeneratorInterface, string $stripe_api_key)
   {
     $this->doctrine = $doctrine;
+    $this->urlGenerator = $urlGeneratorInterface;
     $this->stripe_api_key = $stripe_api_key;
   }
 
@@ -62,8 +65,8 @@ class CheckoutService
     $session = $stripe->checkout->sessions->create([
       'client_reference_id' => json_encode(['order' => $order->getId()]),
       'customer' => $order->getUser()->getStripeCustomerId(),
-      'success_url' => 'https://example.com/success',
-      'cancel_url' => 'https://example.com/cancel',
+      'success_url' => $this->urlGenerator->generate('app_usr_cart', [], UrlGeneratorInterface::ABSOLUTE_URL),
+      'cancel_url' => $this->urlGenerator->generate('app_usr_cart', [], UrlGeneratorInterface::ABSOLUTE_URL),
       'line_items' => $items,
       'mode' => 'payment',
       'payment_method_types' => ['card'],

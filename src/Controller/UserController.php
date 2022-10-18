@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\CartItem;
+use App\Entity\User;
 use App\Service\CheckoutService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,8 +23,10 @@ class UserController extends AbstractController
     #[Route('/my/cart', name: 'app_usr_cart')]
     public function userCart(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        /** @var User */
+        $user = $this->getUser();
         /** @var Cart */
-        $cart = $this->getUser()->getCarts()->last();
+        $cart = $user->getCarts()->last();
 
         $rem = $request->query->get('remove');
         if ($rem) {
@@ -51,7 +54,10 @@ class UserController extends AbstractController
     #[Route('/my/cart/pay', name: 'app_usr_cart_pay')]
     public function userCartPay(CheckoutService $check): Response
     {
-        $cart = $this->getUser()->getCarts()->last();
+        /** @var User */
+        $user = $this->getUser();
+        /** @var Cart */
+        $cart = $user->getCarts()->last();
 
         $order = $check->cartToOrder($cart);
         $checkout = $check->getCheckout($order);
