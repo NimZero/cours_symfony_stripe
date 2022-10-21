@@ -28,8 +28,11 @@
         <span>Abonnement:
             {{ app.user.subscriptionStatus }}</span>
         <br>
-        <span>Tier:
-            {% if is_granted('SUBSCRIPTION_TIER_2') %} 2 {% elseif is_granted('SUBSCRIPTION_TIER_1') %} 1 {% else %} N/A {% endif %}</span>
+        <span>Tier(s):
+            {% if is_granted('SUBSCRIPTION_TIER_2') %} 2 {% endif %}
+            {% if is_granted('SUBSCRIPTION_TIER_1') %} 1 {% endif %}
+            {% if not is_granted('SUBSCRIPTION_TIER_1') %} N/A {% endif %}
+        </span>
         <br>
         <a href="{{ path('app_usr_subscribe') }}" class="btn btn-primary">Subscribe</a>
         <br>

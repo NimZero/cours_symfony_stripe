@@ -36,7 +36,9 @@ class SubscriptionVoter extends Voter implements CacheableVoterInterface
         $tier = strtolower(substr($attribute, strlen(SELF::PREFIX)));
 
         if (array_key_exists($tier, $this->subscriptionProducts)) {
-            return $this->subscriptionProducts[$tier] === $user->getSubscriptionProduct();
+            $userTier = array_search($user->getSubscriptionProduct(), $this->subscriptionProducts);
+
+            return $userTier >= $tier;
         }
 
         return false;
